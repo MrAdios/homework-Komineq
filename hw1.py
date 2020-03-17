@@ -70,5 +70,12 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     
     # Your code goes here (remove pass)
     date=datetime.date(year,month,day).strftime('%-m/%-d/&y')
+    pop_data=date-datetime.timedelta(days=1)									     
     ile = 0
-										     
+    confirmed = confirmed_cases[[date]].values[0]
+    pop_confirmed = confirmed_cases[[pop_data]].values[0]
+    for i in confirmed:
+    	if confirmed[i] !=pop_confirmed[i]:
+    		ile += 1
+    return ile									     
+    										     
