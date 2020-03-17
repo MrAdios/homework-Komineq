@@ -12,7 +12,7 @@ This speeds up the tests significantly
 confirmed_cases = pd.read_csv(CONFIRMED_CASES_URL, error_bad_lines=False)
 
 
-def poland_cases_by_date(day: int, month: int, year: int = 2020) -> int:
+def poland_cases_by_date(day: int, month: int, year: int =20) -> int:
     """
     Returns confirmed infection cases for country 'Poland' given a date.
 
@@ -29,10 +29,10 @@ def poland_cases_by_date(day: int, month: int, year: int = 2020) -> int:
     """
     
     # Your code goes here (remove pass)
-    pass
+	result = confirmed_cases.loc[confirmed_cases["Country/Region"]=="Poland"][f"{mies}/{dzien}/{year}"].values[0]
+	return result
 
-
-def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
+def top5_countries_by_date(day: int, month: int, year: int = 20) -> List[str]:
     """
     Returns the top 5 infected countries given a date (confirmed cases).
 
@@ -49,8 +49,7 @@ def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
     """
 
     # Your code goes here (remove pass)
-    pass
-
+    return confirmed_cases[["Province/State","Country/Region",f"{month}/{day}/{year}"]].sort_values(by=f"{month}/{day}/{year}").tail(5)
 
 def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
