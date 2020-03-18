@@ -85,7 +85,4 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     confirmed = [int(confirmed) for confirmed in confirmed]
     pop_confirmed = [int(confirmed) for confirmed in pop_confirmed]
 
-    for i in range(len(confirmed)):
-        if confirmed[i] == pop_confirmed[i]:
-            ile += 1
-    return ile
+    return confirmed_cases.loc[(confirmed_cases[confirmed] - confirmed_cases[pop_confirmed]) != 0].count()[-1]
