@@ -29,7 +29,7 @@ def poland_cases_by_date(day: int, month: int, year: int =2020) -> int:
     """
     
     # Your code goes here (remove pass)
-	date=datetime.date(year,month,day).strftime('%-m/%-d/&y')
+	date=datetime.date(year,mies,dzien).strftime('%m/%d/%y').lstrip('0')
 	result = confirmed_cases.loc[confirmed_cases["Country/Region"]=="Poland"][date].values[0]
 	return result
 
@@ -50,8 +50,9 @@ def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
     """
 
     # Your code goes here (remove pass)
-	date=datetime.date(year,month,day).strftime('%-m/%-d/&y')
-	return confirmed_cases[["Province/State","Country/Region",date]].sort_values(by=date}").tail(5)
+    date=datetime.date(year,mies,dzien).strftime('%m/%d/%y').lstrip('0')
+    return confirmed_cases[["Country/Region",date]].groupby("Country/Region").sum().sort_values(by=date, ascending=False).head(5)
+										     
 def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
     Returns the number of countries/regions where the infection count in a given day was the same as the previous day.
@@ -69,13 +70,22 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
     
     # Your code goes here (remove pass)
-    date=datetime.date(year,month,day).strftime('%-m/%-d/&y')
-    pop_data=date-datetime.timedelta(days=1)									     
+								     
+    date=datetime.date(year,month,day)
+    pop_date=date-datetime.timedelta(days=1)
+
+    xdate = date.strftime('%m/%d/%y').lstrip('0')
+    xpop_date = pop_date.strftime('%m/%d/%y').lstrip('0')
+
     ile = 0
-    confirmed = confirmed_cases[[date]].values[0]
-    pop_confirmed = confirmed_cases[[pop_data]].values[0]
-    for i in confirmed:
-    	if confirmed[i] !=pop_confirmed[i]:
-    		ile += 1
-    return ile									     
-    										     
+
+    confirmed = confirmed_cases[[xdate]].values
+    pop_confirmed = confirmed_cases[[xpop_date]].values
+
+    confirmed = [int(confirmed) for confirmed in confirmed]
+    pop_confirmed = [int(confirmed) for confirmed in pop_confirmed]
+
+    for i in range(len(confirmed)):
+        if confirmed[i] == pop_confirmed[i]:
+            ile += 1
+    return ile
