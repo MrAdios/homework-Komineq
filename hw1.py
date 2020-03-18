@@ -77,12 +77,5 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     xdate = date.strftime('%m/%d/%y').lstrip('0')
     xpop_date = pop_date.strftime('%m/%d/%y').lstrip('0')
 
-    ile = 0
 
-    confirmed = confirmed_cases[[xdate]].values
-    pop_confirmed = confirmed_cases[[xpop_date]].values
-
-    confirmed = [int(confirmed) for confirmed in confirmed]
-    pop_confirmed = [int(confirmed) for confirmed in pop_confirmed]
-
-    return confirmed_cases.loc[(confirmed_cases[confirmed] - confirmed_cases[pop_confirmed]) != 0].count()[-1]
+    return confirmed_cases.loc[(confirmed_cases[xdate] - confirmed_cases[xpop_date]) != 0].count()[-1]
