@@ -2,6 +2,7 @@ from typing import List
 
 import pandas as pd
 imoprt datetime
+import os
 
 CONFIRMED_CASES_URL = f"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data" \
                       f"/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv "
@@ -30,7 +31,10 @@ def poland_cases_by_date(day: int, month: int, year: int =2020) -> int:
     """
     
     # Your code goes here (remove pass)
-	date=datetime.date(year,mies,dzien).strftime('%-m/%-d/%y')
+	if os.name == "nt":
+		date=datetime.date(year,mies,dzien).strftime('%#m/%#d/%y')
+	else:
+		date=datetime.date(year,mies,dzien).strftime('%-m/%-d/%y')	
 	result = confirmed_cases.loc[confirmed_cases["Country/Region"]=="Poland"][date].values[0]
 	return result
 
@@ -51,7 +55,10 @@ def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
     """
 
     # Your code goes here (remove pass)
-    date=datetime.date(year,mies,dzien).strftime('%-m/%-d/%y')
+    if os.name == "nt":
+        date=datetime.date(year,mies,dzien).strftime('%#m/%#d/%y')
+    else:
+        date=datetime.date(year,mies,dzien).strftime('%-m/%-d/%y')
     return confirmed_cases[["Country/Region",date]].groupby("Country/Region").sum().sort_values(by=date, ascending=False).head(5)
 										     
 def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
@@ -75,8 +82,12 @@ def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     date=datetime.date(year,month,day)
     pop_date=date-datetime.timedelta(days=1)
 
-    xdate = date.strftime('%-m/%-d/%y')
-    xpop_date = pop_date.strftime('%-m/%-d/%y')
+    if os.name == "nt":
+        xdate = date.strftime('%#m/%#d/%y')
+        xpop_date = pop_date.strftime('%#m/%#d/%y')
+    else:
+        xdate = date.strftime('%-m/%-d/%y')
+        xpop_date = pop_date.strftime('%-m/%-d/%y')
 
 
     return confirmed_cases.loc[(confirmed_cases[xdate] - confirmed_cases[xpop_date]) != 0].count()[-1]
