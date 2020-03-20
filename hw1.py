@@ -54,7 +54,8 @@ def top5_countries_by_date(day: int, month: int, year: int = 2020) -> List[str]:
         date=datetime.date(year,month,day).strftime('%#m/%#d/%y')
     else:
         date=datetime.date(year,month,day).strftime('%-m/%-d/%y')
-    return confirmed_cases[["Country/Region",date]].groupby("Country/Region").sum().sort_values(by=date, ascending=False).head(5)
+    c =confirmed_cases[["Country/Region",date]].groupby("Country/Region").sum().sort_values(by=date, ascending=False).head(5)
+    return list(c.index)
 										     
 def no_new_cases_count(day: int, month: int, year: int = 2020) -> int:
     """
