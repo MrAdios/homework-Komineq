@@ -41,8 +41,9 @@ def countries_with_no_deaths_count(date: datetime.date) -> int:
     """
     
     # Your code goes here
-    pass
-
+    D=dfD.loc[dfD[format_date(date)]>0]
+    C=dfC.loc[dfC[format_date(date)]>0]
+    return len(C)-len(D)
 
 def more_cured_than_deaths_indices(date: datetime.date) -> List[int]:
     """
@@ -66,4 +67,4 @@ def more_cured_than_deaths_indices(date: datetime.date) -> List[int]:
     """
     
     # Your code goes here
-    pass
+    return dfR.loc[dfR[format_date(date)]>dfD[format_date(date)]].index
