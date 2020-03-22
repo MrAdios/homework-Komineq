@@ -67,4 +67,4 @@ def more_cured_than_deaths_indices(date: datetime.date) -> List[int]:
     """
     
     # Your code goes here
-    return dfR.loc[dfR[format_date(date)]>dfD[format_date(date)]].index
+    return dfR.loc[dfR[format_date(date)]>dfD[format_date(date)]].index.tolist()
